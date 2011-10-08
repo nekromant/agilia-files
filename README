@@ -1,0 +1,8 @@
+This package contains some packages for Agilia linux, 
+that are not yet mainlined, but still needed if you are in 
+electronics (as me) and work with avr and msp430.
+edit vars at the very top of Makefile to point at
+the output dir for packages. And add that dir as a repo manually. 
+Then just run make. 
+
+
