@@ -1,4 +1,5 @@
-packs=libftdi mspdebug avrdude usniffer kicad iverilog kicad-libs-base kicad-libs-leaf
+#packs=libftdi mspdebug avrdude usniffer kicad iverilog kicad-libs-base kicad-libs-leaf
+exclude=sources packages
 pdir=packages/
 
 define do_install
@@ -15,6 +16,10 @@ $(1): $(2)
 	-$(call do_install,$(1))
 endef
 
+define parse_deps
+
+endef
+
 
 all: $(packs)
 .PHONY: $(packs)
@@ -25,6 +30,8 @@ purge:
 %-i: %
 	-$(call do_install, $^)
 
+dirs = avrdude
+$(foreach dirs,$(dir), )
 $(eval $(call package,avrdude,libftdi))
 $(eval $(call package,libftdi,))
 $(eval $(call package,kicad,))
@@ -33,21 +40,3 @@ $(eval $(call package,usniffer,))
 $(eval $(call package,mspdebug,))
 $(eval $(call package,iverilog))
 $(eval $(call package,kicad-libs-leaf))
-# 
-# avrdude: libftdi
-# 	$(call run_mkpg,avrdude)
-# 	
-# 
-# libftdi: 
-# 	$(call run_mkpg,libftdi)
-# 	-$(call do_install,libftdi)
-# kicad: kicad-libs-base
-# 	$(call run_mkpg,kicad)
-# 	-$(call do_install,kicad)
-# usniffer:
-# 	$(call run_mkpg,usniffer)
-# 	-$(call do_install,usniffer)
-# mspdebug: 
-# 	$(call run_mkpg,mspdebug)
-# 	-$(call do_install,mspdebug)
-# 
