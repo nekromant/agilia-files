@@ -1,4 +1,4 @@
-packs=libftdi mspdebug avrdude usniffer kicad iverilog kicad-libs-base
+packs=libftdi mspdebug avrdude usniffer kicad iverilog kicad-libs-base kicad-libs-leaf
 pdir=packages/
 
 define do_install
@@ -32,7 +32,7 @@ $(eval $(call package,kicad-libs-base,))
 $(eval $(call package,usniffer,))
 $(eval $(call package,mspdebug,))
 $(eval $(call package,iverilog))
-
+$(eval $(call package,kicad-libs-leaf))
 # 
 # avrdude: libftdi
 # 	$(call run_mkpg,avrdude)
