@@ -20,7 +20,7 @@ patch_opts=("")
 tags="utils dev-embedded"
 
 #dependencies only needed to build package
-build_deps=""
+build_deps="libusb libftdi"
 
 provides=""
 conflicts=""

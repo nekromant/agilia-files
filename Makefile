@@ -2,7 +2,7 @@ packs=libftdi mspdebug avrdude usniffer kicad kicad-libs-base
 pdir=packages/
 
 define do_install
-cd packages && mpkg-index && sudo mpkg update && sudo mpkg install $(1)
+cd packages && mpkg-index && sudo mpkg update && sudo mpkg -y install $(1)
 endef
 
 define run_mkpg
@@ -27,7 +27,7 @@ purge:
 
 $(eval $(call package,avrdude,libftdi))
 $(eval $(call package,libftdi,))
-$(eval $(call package,kicad,kicad-libs-base))
+$(eval $(call package,kicad,))
 $(eval $(call package,kicad-libs-base,))
 $(eval $(call usniffer,))
 $(eval $(call mspdebug,))
