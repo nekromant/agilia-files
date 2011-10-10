@@ -1,23 +1,24 @@
 #ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
 #----------------------------- General vars --------------------------------------
 #------------------------- Основные переменные -----------------------------------
-pkgname=kicad
-pkgver=20110607-r3015
+pkgname=kicad-libs-base
+pkgver=20111010
 pkgbuild=1
 arch=('auto')
 
-shortdesc="OpenSource EDA suite"
+shortdesc="Kicad base libraries"
 #longdesc=(""
 #)
 
-source=("http://kicad.1301.cz/source/${pkgname}-${pkgver}-source.tbz2")
+source=("bzr:lp:~kicad-lib-committers/kicad/library")
 
 patch_opts=("")
 
 #----------------------------- AgiliaLinux vars --------------------------------------
 #--------------------- Специфичные для AgiliaLinux ------------------------------
 #short and long tags / длинный и короткий тег
-tags="develop dev-embedded"
+tags="utils dev-embedded"
+
 
 #dependencies only needed to build package
 build_deps=""
@@ -25,7 +26,7 @@ build_deps=""
 provides=""
 conflicts=""
 
-adddep="kicad-libs-base"
+adddep=""
 removedep=""
 
 #for multi pkg abuild
@@ -54,7 +55,6 @@ custom_opts=""
 BUILD_SYSTEM="cmake"
 BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
 -DCMAKE_BUILD_TYPE=RELEASE \
--DKICAD_STABLE_VERSION=ON \
 -DLIB_DIR=lib${LIBDIRSUFFIX} \
 -DLIB_SUFFIX=${LIBDIRSUFFIX} \
 ../"
