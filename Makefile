@@ -1,7 +1,11 @@
-#packs=libftdi mspdebug avrdude usniffer kicad iverilog kicad-libs-base kicad-libs-leaf
-exclude=sources packages
+#dirs to exclude from mass build'n'install
+exclude= . sources packages .git
+#dir where packages are placed
 pdir=packages/
-
+#dummy packages that are not built in this repository, but are
+#listed in build_deps
+dummies=libusb
+######BLACK MAGIC GOES BELOW######
 define do_install
 cd packages && mpkg-index && sudo mpkg update && sudo mpkg -y install $(1)
 endef
@@ -16,13 +20,21 @@ $(1): $(2)
 	-$(call do_install,$(1))
 endef
 
-define parse_deps
-
+define dummy_pack
+$(1): 
+	$(info $(1) is a dummy target)
 endef
 
+define get_build_dep
+$(shell source $(1)/ABUILD; echo $$build_deps)
+endef
 
-all: $(packs)
-.PHONY: $(packs)
+dirs = $(patsubst ./%,%,$(shell find . -type d -maxdepth 1))
+dirs := $(filter-out $(exclude), $(dirs))
+$(info processing: $(dirs))
+
+all: $(dirs)
+.PHONY: $(dirs) $(dummies)
 
 purge:
 	$(foreach f,$(packs),mpkg-remove $f)
@@ -30,13 +42,5 @@ purge:
 %-i: %
 	-$(call do_install, $^)
 
-dirs = avrdude
-$(foreach dirs,$(dir), )
-$(eval $(call package,avrdude,libftdi))
-$(eval $(call package,libftdi,))
-$(eval $(call package,kicad,))
-$(eval $(call package,kicad-libs-base,))
-$(eval $(call package,usniffer,))
-$(eval $(call package,mspdebug,))
-$(eval $(call package,iverilog))
-$(eval $(call package,kicad-libs-leaf))
+
+$(foreach dir,$(dirs),$(eval $(call package,$(dir),$(call get_build_dep,$(dir)))))
