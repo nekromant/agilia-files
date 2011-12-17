@@ -2,7 +2,7 @@
 #----------------------------- General vars --------------------------------------
 #------------------------- Основные переменные -----------------------------------
 pkgname=kicad
-pkgver=20110607-r3015
+pkgver=bzr-stable
 pkgbuild=1
 arch=('auto')
 
@@ -10,7 +10,7 @@ shortdesc="OpenSource EDA suite"
 #longdesc=(""
 #)
 
-source=("http://kicad.1301.cz/source/${pkgname}-${pkgver}-source.tbz2")
+source=("bzr:lp:kicad/stable kicad.bzr")
 
 patch_opts=("")
 

@@ -62,7 +62,7 @@ BUILD_KEYS="--prefix=/usr \
 --disable-static \
 --mandir=/usr/man \
 --program-prefix= \
---program-suffix="\
+--program-suffix= \
 --enable-parport\
 --enable-ft2232_libftdi\
 --enable-usb_blaster_libftdi\
@@ -83,7 +83,7 @@ BUILD_KEYS="--prefix=/usr \
 --enable-ulink\
 --enable-arm-jtag-ew\
 --enable-buspirate
-
+"
 
 INSTALL_KEYS="DESTDIR=$pkgdir"
 

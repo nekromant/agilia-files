@@ -1,13 +1,13 @@
 #dirs to exclude from mass build'n'install
 exclude= . sources packages .git
 #dir where packages are placed
-pdir=packages/
+pdir=../packages/
 #dummy packages that are not built in this repository, but are
 #listed in build_deps
 dummies=libusb
 ######BLACK MAGIC GOES BELOW######
 define do_install
-cd packages && mpkg-index && sudo mpkg update && sudo mpkg -y install $(1)
+cd $(pdir) && mpkg-index && mpkg update && mpkg install -y $(1)
 endef
 
 define run_mkpg
