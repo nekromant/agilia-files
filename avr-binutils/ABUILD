@@ -1,0 +1,87 @@
+#ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+
+tcname=avr
+tcvariant=""
+
+pkgname=avr-binutils
+pkgver=2.22
+pkgbuild=1
+arch=('auto')
+
+shortdesc="GNU Binary Utilities for ATMEL AVR architecture"
+#longdesc=(""
+#)
+
+
+
+source=("http://ftp.gnu.org/gnu/binutils/binutils-${pkgver}.tar.bz2")
+
+patch_opts=("")
+
+
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+#short and long tags / длинный и короткий тег
+tags="develop dev-embedded"
+
+#dependencies only needed to build package
+build_deps=""
+
+provides=""
+conflicts=""
+
+adddep=""
+removedep=""
+
+#for multi pkg abuild
+pkglist=
+
+#Set number of jobs while compliling, otherwise it'll be autodetected
+#numjobs=1
+
+#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
+docs=
+gendeps_blacklist=
+
+#custom_opts: skip_validate skip_gendeps no_postperm no_strip
+custom_opts=""
+
+#----------------------------- Make PKG --------------------------------------
+#-------------------------- Сборка пакета ------------------------------------
+
+#ran before function build()
+#запускается перед сборкой.
+before_build()
+{
+go_src_dir
+burn_patches
+mkdir obj-avr
+cd obj-avr
+}
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ../configure"
+
+BUILD_KEYS="--prefix=/opt/toolchains/${tcname}${tcvariant} \
+--target=avr --disable-nls \
+--sysconfdir=/opt/toolchains/${tcname}${tcvariant}/etc \
+--localstatedir=/opt/toolchains/${tcname}${tcvariant}/var \
+--libdir=/opt/toolchains/${tcname}${tcvariant}/usr/lib${LIBDIRSUFFIX} \
+--mandir=/opt/toolchains/${tcname}${tcvariant}/usr/man \
+--disable-doc\
+--disable-static "
+
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+
+#ran after function build() 
+#после сборки
+after_build()
+{
+#Fix doc path
+mv ${pkgdir}/usr/doc ${pkgdir}/opt/toolchains/${tcname}/usr/
+}
