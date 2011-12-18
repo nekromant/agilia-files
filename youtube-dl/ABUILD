@@ -1,31 +1,31 @@
 #ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
 #----------------------------- General vars --------------------------------------
 #------------------------- Основные переменные -----------------------------------
-pkgname=python-pyserial
-pkgver=2.6
+pkgname=youtube-dl
+pkgver=
 pkgbuild=1
 arch=('auto')
 
-shortdesc="A python library to access serial ports."
+shortdesc="Command line youtube video downloader"
 #longdesc=(""
 #)
 
-source=("http://pypi.python.org/packages/source/p/pyserial/pyserial-${pkgver}.tar.gz")
+source=("git:https://github.com/rg3/youtube-dl.git")
 
 patch_opts=("")
 
 #----------------------------- AgiliaLinux vars --------------------------------------
 #--------------------- Специфичные для AgiliaLinux ------------------------------
 #short and long tags / длинный и короткий тег
-tags="dev-python libs"
+tags="www-misc console"
 
 #dependencies only needed to build package
-build_deps="python"
+build_deps=""
 
-provides="python-pyserial"
+provides=""
 conflicts=""
 
-adddep=""
+adddep="python"
 removedep=""
 
 #for multi pkg abuild
@@ -55,8 +55,9 @@ build()
 {
 go_src_dir
 burn_patches
-python setup.py build
-python setup.py install --prefix=${pkgdir}
+make 
+mkdir -p ${pkgdir}/usr/bin/
+cp ./youtube-dl ${pkgdir}/usr/bin/
 }
 
 

@@ -1,7 +1,9 @@
 #dirs to exclude from mass build'n'install
 exclude= . sources packages .git
 #dir where packages are placed
-pdir=../packages/
+pdir=../packages
+arch=x86_64
+repo=astra:/data/www/htdocs/agilia/x86_64
 #dummy packages that are not built in this repository, but are
 #listed in build_deps
 dummies=libusb
@@ -33,11 +35,26 @@ dirs = $(patsubst ./%,%,$(shell find . -type d -maxdepth 1))
 dirs := $(filter-out $(exclude), $(dirs))
 $(info processing: $(dirs))
 
+indexfiles=index.log package_list setup_variants.list package_list.html packages.xml.* 
+
 all: $(dirs)
-.PHONY: $(dirs) $(dummies)
+.PHONY: $(dirs) $(dummies) index
 
 purge:
 	$(foreach f,$(packs),mpkg-remove $f)
+
+index:
+	cd $(pdir) && mpkg-index
+
+
+genhtml: index
+	cat $(pdir)/package_list|while read line;\
+	do echo "$$line<br>";\
+	done  > $(pdir)/package_list.html
+
+push-%: genhtml
+	cd $(pdir);\
+	scp $(indexfiles) *$** $(repo)
 
 %-i: %
 	-$(call do_install, $^)
