@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=avr-gcc
 pkgver=4.6.2
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 tcname=avr
@@ -60,7 +60,7 @@ cd build
 
 BUILD_SYSTEM="autotools"
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ../configure"
+BUILD_WORD="../configure"
 
 BUILD_KEYS="--prefix=/opt/toolchains/${tcname}${tcvariant} \
 --target=avr --disable-nls \

@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=avr-libc
 pkgver=1.7.2rc2252
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 tcname=avr

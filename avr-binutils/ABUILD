@@ -7,7 +7,7 @@ tcvariant=""
 
 pkgname=avr-binutils
 pkgver=2.22
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="GNU Binary Utilities for ATMEL AVR architecture"
@@ -64,7 +64,7 @@ cd obj-avr
 
 BUILD_SYSTEM="autotools"
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ../configure"
+BUILD_WORD="../configure"
 
 BUILD_KEYS="--prefix=/opt/toolchains/${tcname}${tcvariant} \
 --target=avr --disable-nls \
