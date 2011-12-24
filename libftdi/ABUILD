@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=libftdi
 pkgver=0.19
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="An opensource library to work with ftdi chips"

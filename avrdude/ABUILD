@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=avrdude
 pkgver=5.11.1
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="ISP tool for avr microcontrollers"

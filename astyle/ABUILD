@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=astyle
 pkgver=2.02.1_linux
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="Source code formatter"

@@ -7,7 +7,7 @@ tcvariant=""
 
 pkgname=avr-binutils
 pkgver=2.22
-pkgbuild=2
+pkgbuild=3
 arch=('auto')
 
 shortdesc="GNU Binary Utilities for ATMEL AVR architecture"

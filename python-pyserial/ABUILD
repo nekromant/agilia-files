@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=python-pyserial
 pkgver=2.6
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="A python library to access serial ports."

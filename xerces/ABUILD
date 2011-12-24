@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=xerces
 pkgver=3.1.1
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="A validating XML parsing library"

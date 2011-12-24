@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=stm32flash
 pkgver=
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="A tool to programm stm32 microcontrollers via USART"

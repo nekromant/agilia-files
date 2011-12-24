@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=toolchain-avr
 pkgver=1.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="GCC-Based toolchain for Atmel-AVR"

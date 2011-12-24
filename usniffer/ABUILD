@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=usniffer
 pkgver=0.1
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="A small sniffer for UART communications"

@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=openocd
 pkgver=0.5.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="OpenOnChip JTAG debugger"

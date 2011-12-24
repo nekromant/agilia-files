@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=kicad
 pkgver=bzr-stable
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="OpenSource EDA suite"
