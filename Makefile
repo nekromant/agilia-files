@@ -3,7 +3,7 @@ exclude= . sources packages .git
 #dir where packages are placed
 pdir=../packages
 arch=x86_64
-repo=astra:/data/www/htdocs/agilia/x86_64
+repo=invyl.ath.cx:/data/www/htdocs/agilia/x86_64
 #dummy packages that are not built in this repository, but are
 #listed in build_deps
 dummies=libusb
@@ -52,9 +52,15 @@ genhtml: index
 	do echo "$$line<br>";\
 	done  > $(pdir)/package_list.html
 
-push-%: genhtml
+pushindex: genhtml
 	cd $(pdir);\
-	scp $(indexfiles) *$** $(repo)
+	scp $(indexfiles) $(repo)
+
+push-%: 
+	cd $(pdir);\
+	scp *$** $(repo)
+
+	
 
 %-i: %
 	-$(call do_install, $^)
