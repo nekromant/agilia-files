@@ -43,7 +43,7 @@ docs=
 gendeps_blacklist=
 
 #custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
+custom_opts="no_strip"
 
 #----------------------------- Make PKG --------------------------------------
 #-------------------------- Сборка пакета ------------------------------------
@@ -58,22 +58,34 @@ mkdir build
 cd build
 }
 
-BUILD_SYSTEM="autotools"
+# BUILD_SYSTEM="autotools"
 
-BUILD_WORD="../configure"
+# BUILD_WORD="../configure"
+GCCCORE_CFG="--program-prefix=avr- --with-gcc --with-gnu-ld --with-gnu-as --with-dwarf2 --disable-libssp --enable-languages=c,c++ --disable-werror --disable-nls\
+ --disable-shared --disable-threads" 
 
-BUILD_KEYS="--prefix=/opt/toolchains/${tcname}${tcvariant} \
---target=avr --disable-nls \
---enable-languages=c,c++ \
---sysconfdir=/opt/toolchains/${tcname}${tcvariant}/etc \
---localstatedir=/opt/toolchains/${tcname}${tcvariant}/var \
---libdir=/opt/toolchains/${tcname}${tcvariant}/usr/lib${LIBDIRSUFFIX} \
---mandir=/opt/toolchains/${tcname}${tcvariant}/usr/man \
---disable-libssp --with-dwarf2 \
---disable-doc\
-"
+build()
+{
+unset LD_LIBRARY_PATH
+unset CXX
+unset CC
+export PATH=/opt/toolchains/${tcname}${tcvariant}/bin:$PATH
+# ../configure --prefix=/opt/toolchains/${tcname}${tcvariant} \
+# --target=avr --disable-nls \
+# --enable-languages=c,c++ \
+# --disable-libssp --with-dwarf2 \
+# --with-gnu-as \
+# --with-gnu-ld \
+# --with-as=/opt/toolchains/${tcname}${tcvariant}/bin/avr-as \
+# --with-ld=/opt/toolchains/${tcname}${tcvariant}/bin/avr-ld
+../configure \
+--target=avr \
+--prefix=/opt/toolchains/${tcname}${tcvariant} $GCCCORE_CFG 
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+make
+make DESTDIR=$pkgdir install
+}
+# INSTALL_KEYS="DESTDIR=$pkgdir"
 
 #ran after function build() 
 #после сборки
@@ -81,4 +93,5 @@ after_build()
 {
 #Fix doc path
 mv ${pkgdir}/usr/doc ${pkgdir}/opt/toolchains/${tcname}/usr/
+rm -f ${pkgdir}/opt/toolchains/${tcname}${tcvariant}/lib${LIBDIRSUFFIX}/libiberty.a
 }

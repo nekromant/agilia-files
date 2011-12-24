@@ -40,7 +40,7 @@ removedep=""
 pkglist=
 
 #Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
+#numjobs=8
 
 #additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
 docs=
@@ -49,39 +49,48 @@ gendeps_blacklist=
 #custom_opts: skip_validate skip_gendeps no_postperm no_strip
 custom_opts=""
 
+
 #----------------------------- Make PKG --------------------------------------
 #-------------------------- Сборка пакета ------------------------------------
 
 #ran before function build()
 #запускается перед сборкой.
-before_build()
+#before_build()
+#{
+#
+#}
+
+build()
 {
 go_src_dir
 burn_patches
-mkdir obj-avr
-cd obj-avr
+unset LD_LIBRARY_PATH
+unset CC
+unset CXX
+env > /tmp/env_mpkg
+mkdir build
+cd build
+# CC="gcc -L$(pwd)/bfd/.libs/"
+#Compiler cache doesn't work good with avr compilation
+#So we have to unset CC to avoid probs
+if [ "64" == "${LIBDIRSUFFIX}" ]; then
+echo "!!! 64 bit rock'n'roll !!!"
+../configure 	--target=avr --disable-nls \
+                 	--prefix=/opt/toolchains/${tcname}${tcvariant}
+else
+../configure 	--target=avr --disable-nls \
+                 	--prefix=/opt/toolchains/${tcname}${tcvariant}
+fi
+
+make -j8
+make  DESTDIR=${pkgdir} install
 }
 
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="../configure"
-
-BUILD_KEYS="--prefix=/opt/toolchains/${tcname}${tcvariant} \
---target=avr --disable-nls \
---sysconfdir=/opt/toolchains/${tcname}${tcvariant}/etc \
---localstatedir=/opt/toolchains/${tcname}${tcvariant}/var \
---libdir=/opt/toolchains/${tcname}${tcvariant}/usr/lib${LIBDIRSUFFIX} \
---mandir=/opt/toolchains/${tcname}${tcvariant}/usr/man \
---disable-doc\
---disable-static "
-
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
 
 #ran after function build() 
 #после сборки
 after_build()
 {
-#Fix doc path
-mv ${pkgdir}/usr/doc ${pkgdir}/opt/toolchains/${tcname}/usr/
+rm -f ${pkgdir}/opt/toolchains/${tcname}${tcvariant}/lib${LIBDIRSUFFIX}/libiberty.a
+mv ${pkgdir}/usr/doc ${pkgdir}/opt/toolchains/${tcname}${tcvariant}/usr/
 }

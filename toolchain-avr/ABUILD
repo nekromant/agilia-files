@@ -20,12 +20,13 @@ patch_opts=("")
 tags="develop dev-embedded"
 
 #dependencies only needed to build package
-build_deps=""
+
 
 provides=""
 conflicts=""
 
-adddep="avr-libc avr-gcc avr-binutils"
+build_deps="avr-libc avr-gcc avr-binutils"
+adddep=${build_dep}
 removedep=""
 
 #for multi pkg abuild

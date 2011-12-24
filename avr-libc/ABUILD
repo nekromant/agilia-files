@@ -2,7 +2,7 @@
 #----------------------------- General vars --------------------------------------
 #------------------------- Основные переменные -----------------------------------
 pkgname=avr-libc
-pkgver=1.7.2rc2252
+pkgver=1.7.1
 pkgbuild=2
 arch=('auto')
 
@@ -45,7 +45,7 @@ docs=
 gendeps_blacklist=
 
 #custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
+custom_opts="no_strip"
 
 #----------------------------- Make PKG --------------------------------------
 #-------------------------- Сборка пакета ------------------------------------
@@ -56,24 +56,28 @@ before_build()
 {
 go_src_dir
 burn_patches
-mkdir obj-avr
-cd obj-avr
 }
 
-BUILD_SYSTEM="autotools"
+#BUILD_SYSTEM="autotools"
 
-BUILD_WORD=" ../configure"
+#BUILD_WORD=" ../configure"
 
-BUILD_KEYS="--prefix=/opt/toolchains/${tcname}${tcvariant} \
---sysconfdir=/opt/toolchains/${tcname}${tcvariant}/etc \
---localstatedir=/opt/toolchains/${tcname}${tcvariant}/var \
---libdir=/opt/toolchains/${tcname}${tcvariant}/usr/lib${LIBDIRSUFFIX} \
---mandir=/opt/toolchains/${tcname}${tcvariant}/usr/man \
---target=avr \
---host=avr \
---program-suffix="
+#BUILD_KEYS="--prefix=/opt/toolchains/${tcname}${tcvariant} \
+#--build=`./config.guess` \
+#--host=avr \
+#"
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+#INSTALL_KEYS="DESTDIR=$pkgdir"
+
+build()
+{
+export PATH=/opt/toolchains/${tcname}${tcvariant}/bin:$PATH
+./configure --prefix=/opt/toolchains/${tcname}${tcvariant} \
+--build=`./config.guess` \
+--host=avr 
+make
+DESTDIR=$pkgdir make install
+}
 
 #ran after function build() 
 #после сборки
