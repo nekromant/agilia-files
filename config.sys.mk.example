@@ -1,0 +1,6 @@
+#Build host configuration
+pdir=../packages
+arch=x86
+repo=invyl.ath.cx:/data/www/htdocs/agilia/x86
+stampdir=../stamps
+

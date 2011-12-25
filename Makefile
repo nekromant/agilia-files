@@ -1,14 +1,10 @@
 #dir where packages are placed
-pdir=../packages
-arch=x86_64
-repo=invyl.ath.cx:/data/www/htdocs/agilia/x86_64
-stampdir=../stamps
+#Include config
+-include config.sys.mk
+#include repo config
+-include config.repo.mk
 
-broken = xilinx_ise_webpack freecad 
 exclude = . .git $(broken) 
-#dummy packages that are not built in this repository, but are
-#listed in build_deps
-dummies=libusb
 bump?=n
 ifeq ($(bump),y)
 	bumps=-ib
