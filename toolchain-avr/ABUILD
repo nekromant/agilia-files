@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=toolchain-avr
 pkgver=1.0
-pkgbuild=2
+pkgbuild=3
 arch=('auto')
 
 shortdesc="GCC-Based toolchain for Atmel-AVR"
@@ -25,8 +25,8 @@ tags="develop dev-embedded"
 provides=""
 conflicts=""
 
-build_deps="avr-libc avr-gcc avr-binutils"
-adddep=${build_dep}
+build_deps=""
+adddep="avr-libc avr-gcc avr-binutils"
 removedep=""
 
 #for multi pkg abuild
