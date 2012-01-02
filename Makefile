@@ -75,7 +75,7 @@ pushindex: genhtml
 	scp $(indexfiles) $(repo)
 
 push: 
-	rsync -arv --delete-after $(pdir)/ $(repo)
+	rsync -arv --delete-after $(rsyncextra) $(pdir)/   $(repo)
 
 purge:
 	mpkg remove $(dirs)

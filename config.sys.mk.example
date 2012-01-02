@@ -1,6 +1,7 @@
 #Build host configuration
 pdir=../packages
-arch=x86
-repo=invyl.ath.cx:/data/www/htdocs/agilia/x86
+arch=x86_64
+rsyncextra=-e ssh
+repo=invyl.ath.cx:/data/www/htdocs/agilia/x86_64
 stampdir=../stamps
 
