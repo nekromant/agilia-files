@@ -14,6 +14,11 @@ endif
 
 ######BLACK MAGIC GOES BELOW######
 
+dirs = $(patsubst ./%,%,$(shell find . -type d -maxdepth 1))
+dirs := $(filter-out $(exclude), $(dirs))
+dirsu=$(filter-out $(exclude_upstream),$(dirs))
+$(info ===> $(dirsu)) 
+
 define dummy_rule
 $(1): 
 	mpkg install $(1)
@@ -45,7 +50,11 @@ $(call make_stamp,$(1)): $(call make_stamp,$(2)) $(addsuffix /ABUILD,$(1))
 	done > $(pdir)/$(1).files.html
 	touch $(call make_stamp,$(1))
 
+$(call make_stamp,push-$(1)): $(call make_stamp,$(1))
+	./agiload.sh $(pdir)/$(1)*.txz
+	touch $(call make_stamp,push-$(1))
 
+pushqueue+=$(call make_stamp,push-$(1))
 endef
 
 
@@ -53,8 +62,7 @@ define get_build_dep
 $(filter-out $(dummies),$(shell source $(1)/ABUILD; echo $$build_deps))
 endef
 
-dirs = $(patsubst ./%,%,$(shell find . -type d -maxdepth 1))
-dirs := $(filter-out $(exclude), $(dirs))
+
 $(info processing: $(dirs))
 
 indexfiles=index.log package_list setup_variants.list package_list.html packages.xml.* 
@@ -77,6 +85,7 @@ pushindex: genhtml
 push: 
 	rsync -arv --delete-after $(rsyncextra) $(pdir)/   $(repo)
 
+	
 purge:
 	mpkg remove $(dirs)
 	-rm -f $(pdir)/*
@@ -84,6 +93,11 @@ purge:
 
 $(foreach dir,$(dirs),$(eval $(call package,$(dir),$(call get_build_dep,$(dir)))))
 # $(foreach dummy,$(dumies),$(eval $(call dummy_rule,$(dummy))))
+
+
+push-testing: $(pushqueue)
+	echo "Pushed, ok"
+	
 
 index:
 	cd $(pdir) && mpkg-index
