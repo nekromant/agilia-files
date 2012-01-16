@@ -17,7 +17,6 @@ endif
 dirs = $(patsubst ./%,%,$(shell find . -type d -maxdepth 1))
 dirs := $(filter-out $(exclude), $(dirs))
 dirsu=$(filter-out $(exclude_upstream),$(dirs))
-$(info ===> $(dirsu)) 
 
 define dummy_rule
 $(1): 
@@ -50,11 +49,12 @@ $(call make_stamp,$(1)): $(call make_stamp,$(2)) $(addsuffix /ABUILD,$(1))
 	done > $(pdir)/$(1).files.html
 	touch $(call make_stamp,$(1))
 
-$(call make_stamp,push-$(1)): $(call make_stamp,$(1))
+$(call make_stamp,push-$(1)): $(call make_stamp,$(1))  $(call make_stamp,$(addprefix push-,$(2)))
 	./agiload.sh $(pdir)/$(1)*.txz
 	touch $(call make_stamp,push-$(1))
 
 pushqueue+=$(call make_stamp,push-$(1))
+
 endef
 
 
@@ -95,10 +95,13 @@ $(foreach dir,$(dirs),$(eval $(call package,$(dir),$(call get_build_dep,$(dir)))
 # $(foreach dummy,$(dumies),$(eval $(call dummy_rule,$(dummy))))
 
 
-push-testing: $(pushqueue)
+push-testing: $(call make_stamp,$(addprefix push-,$(dirsu)))
 	echo "Pushed, ok"
 	
 
 index:
 	cd $(pdir) && mpkg-index
 
+stat:
+	@echo "To push: $(call make_stamp,$(dirsu))"
+	
