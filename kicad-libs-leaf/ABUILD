@@ -4,7 +4,7 @@
 pkgname=kicad-libs-leaf
 pkgver=20111010
 pkgbuild=1
-arch=('auto')
+arch=('noarch')
 
 shortdesc="Kicad libraries by LeafLabs"
 #longdesc=(""

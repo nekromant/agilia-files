@@ -4,7 +4,7 @@
 pkgname=kicad-libs-base
 pkgver=20111010
 pkgbuild=1
-arch=('auto')
+arch=('noarch')
 
 shortdesc="Kicad base libraries"
 #longdesc=(""
