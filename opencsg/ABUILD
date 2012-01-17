@@ -60,7 +60,7 @@ make
 #This sucks, but works
 mkdir -p ${pkgdir}/usr/
 cp -Rfv include ${pkgdir}/usr/include
-cp -Rfv lib ${pkgdir}/usr/lib
+cp -Rfv lib ${pkgdir}/usr/lib${LIBDIRSUFFIX}
 }
 
 
