@@ -1,0 +1,6 @@
+#Edit, chmod +x and move to ~/.agiloadrc
+LOGIN=
+PASS=
+COOKFILE=~/.agicookies
+SERVER=http://packages.agilialinux.ru
+
