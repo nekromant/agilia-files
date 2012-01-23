@@ -3,7 +3,7 @@
 #------------------------- Основные переменные -----------------------------------
 pkgname=udftools
 pkgver=1.0.0b3
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="UDF Filesystem tools"
@@ -13,7 +13,7 @@ shortdesc="UDF Filesystem tools"
 
 source=("http://downloads.sourceforge.net/sourceforge/linux-udf/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-patch_opts=("")
+#patch_opts=("-p0")
 
 #----------------------------- AgiliaLinux vars --------------------------------------
 #--------------------- Специфичные для AgiliaLinux ------------------------------
@@ -47,10 +47,11 @@ custom_opts=""
 
 #ran before function build()
 #запускается перед сборкой.
-#before_build()
-#{
-#
-#}
+
+before_build()
+{
+cp ${srcdir}/../patches/cdmrw.c ${srcdir}/${pkgname}-${pkgver}/
+}
 
 BUILD_SYSTEM="autotools"
 

@@ -1,0 +1,10 @@
+--- ./udftools-1.0.0b3/pktsetup/pktsetup.c.old	2012-01-20 21:54:12.935005671 +0400
++++ udftools-1.0.0b3/pktsetup/pktsetup.c	2012-01-20 21:54:29.550005729 +0400
+@@ -23,6 +23,7 @@
+ #include <getopt.h>
+ #include <bits/types.h>
+ #include <sys/types.h>
++#include <limits.h>
+ 
+ #include <linux/cdrom.h>
+ 
