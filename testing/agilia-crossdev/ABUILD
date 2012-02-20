@@ -1,23 +1,23 @@
 #ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
 #----------------------------- General vars --------------------------------------
 #------------------------- Основные переменные -----------------------------------
-pkgname=courier-authlib
-pkgver=0.63.0
+pkgname=agilia-crossdev
+pkgver=0.1
 pkgbuild=1
 arch=('auto')
 
-shortdesc="courier authentification library"
+shortdesc="Agilia Cross development scripts"
 #longdesc=(""
 #)
-#https://sourceforge.net/projects/courier/files/authlib/0.63.0/courier-authlib-0.63.0.tar.bz2/download
-source=("http://downloads.sourceforge.net/sourceforge/courier/authlib/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+
+#source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
 patch_opts=("")
 
 #----------------------------- AgiliaLinux vars --------------------------------------
 #--------------------- Специфичные для AgiliaLinux ------------------------------
 #short and long tags / длинный и короткий тег
-tags="libs sys-libs"
+tags="develop dev-embedded"
 
 #dependencies only needed to build package
 build_deps=""
@@ -51,20 +51,12 @@ custom_opts=""
 #
 #}
 
-BUILD_SYSTEM="autotools"
+build()
+{
+go_src_dir
+burn_patches
+}
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
 
 #ran after function build() 
 #после сборки

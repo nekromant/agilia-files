@@ -1,0 +1,31 @@
+
+CROSSDEV_API=1
+
+require_crossdev()
+{
+if [ "$1" -lt "$CROSSDEV_API" ]; then
+  echo "This ABUILD requires a newer version of Agilia Crossdev"
+fi
+}
+
+#Hacky stuff to deal with binutils
+create_cross_binutils()
+{
+pkgname=avr-binutils
+#!/bin/bash -x
+pkgver=2.21.1
+arch=('auto')
+source=("http://ftp.gnu.org/gnu/binutils/binutils-${pkgver}.tar.bz2")
+shortdesc="GNU Binary Utilities for ${tcdescr}"
+BUILD_SYSTEM="autotools"
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ../configure"
+BUILD_KEYS="--prefix=/opt/toolchains/${tcname}${tcvariant} \
+--target=avr \
+--sysconfdir=/opt/toolchains/${tcname}${tcvariant}/etc \
+--localstatedir=/opt/toolchains/${tcname}${tcvariant}/var \
+--libdir=/opt/toolchains/${tcname}${tcvariant}/usr/lib${LIBDIRSUFFIX} \
+--mandir=/opt/toolchains/${tcname}${tcvariant}/usr/man"
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+}
+
+
