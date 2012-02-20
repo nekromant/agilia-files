@@ -55,11 +55,11 @@ build()
 {
 go_src_dir
 burn_patches
-sleep 5
 export PREFIX=/usr
+export DESTDIR=${pkgdir}
 xmkmf -a
 make
-DESTDIR=${pkgdir} make install
+ make install
 }
 
 
