@@ -1,0 +1,65 @@
+#ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=transfig
+pkgver=3.2.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc="fig2dev/transfig"
+#longdesc=(""
+#)
+#http://downloads.sourceforge.net/project/mcj/mcj_dist_src/3.0/transfig.3.2.5.tar.gz?r=http%3A%2F%2Fxfig.org%2Fart15.html&ts=1329765223&use_mirror=citylan
+source=("http://downloads.sourceforge.net/mcj/mcj_dist_src/3.0/transfig.${pkgver}.tar.gz")
+
+patch_opts=("")
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+#short and long tags / длинный и короткий тег
+tags="develop dev-libs"
+
+#dependencies only needed to build package
+build_deps="xfig"
+
+provides=""
+conflicts=""
+
+adddep=""
+removedep=""
+
+#for multi pkg abuild
+pkglist=
+
+#Set number of jobs while compliling, otherwise it'll be autodetected
+#numjobs=1
+
+#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
+docs=
+gendeps_blacklist=
+
+#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
+custom_opts=""
+
+#----------------------------- Make PKG --------------------------------------
+#-------------------------- Сборка пакета ------------------------------------
+
+#ran before function build()
+#запускается перед сборкой.
+#before_build()
+#{
+#
+#}
+
+build()
+{
+go_src_dir
+burn_patches
+sleep 5
+export PREFIX=/usr
+xmkmf -a
+make
+DESTDIR=${pkgdir} make install
+}
+
+
