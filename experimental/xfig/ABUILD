@@ -51,14 +51,44 @@ custom_opts=""
 #
 #}
 
+#VooDoo from gentoo
+sed_Imakefile() {
+	# see Imakefile for details
+	vars2subs=( BINDIR=/usr/bin
+		PNGINC=-I/usr/include
+		JPEGLIBDIR="/usr/lib${LIBDIRSUFFIX}"
+		JPEGINC=-I/usr/include
+		XPMLIBDIR="/usr/lib${LIBDIRSUFFIX}"
+		XPMINC=-I/usr/include/X11
+		"USEINLINE = -DUSE_INLINE"
+		XFIGLIBDIR=/usr/share/xfig
+		XFIGDOCDIR="/usr/share/doc/xfig"
+		MANDIR="/usr/share/man/man\$\(MANSUFFIX\)"
+		"CC=${CC}" )
+
+	for variable in "${vars2subs[@]}" ; do
+		varname=${variable%%=*}
+		varval=${variable##*=}
+		sed -i "s:^\(XCOMM\)*[[:space:]]*${varname}[[:space:]]*=.*$:${varname} = ${varval}:" "$@"
+	done
+	sed -i "s:^\(XCOMM\)*[[:space:]]*\(#define I18N\).*$:\2:" "$@"
+	sed -i "s:^\(XCOMM\)*[[:space:]]*\(#define XAW3D1_5E\).*$:\2:" "$@"
+}
+
 build()
 {
 go_src_dir
 burn_patches
+sed_Imakefile Imakefile
+sed -e "s:/usr/lib/X11/xfig:/usr/share/doc/${PF}:" \
+-i Doc/xfig.man -i Doc/xfig_man.html || die
+
 #WTF IS THIS SHIT OF A BUILDSYSTEM !?
 export PREFIX=/usr
-xmkmf -a 
-make
+export LIBDIR=/usr/lib${LIBDIRSUFFIX}
+xmkmf 
+make CC="$(CC)" LOCAL_LDFLAGS="${SLKLDFLAGS}" CDEBUGFLAGS="${CFLAGS}" \
+		USRLIBDIR=/usr/lib${LIBDIRSUFFIX}
 DESTDIR=${pkgdir} make install
 }
 

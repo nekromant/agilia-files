@@ -2,7 +2,7 @@
 #----------------------------- General vars --------------------------------------
 #------------------------- Основные переменные -----------------------------------
 pkgname=transfig
-pkgver=3.2.5
+pkgver=3.2.5d
 pkgbuild=1
 arch=('auto')
 
@@ -51,15 +51,46 @@ custom_opts=""
 #
 #}
 
+#VooDoo for 64 bit
+
+sed_Imakefile() {
+# see fig2dev/Imakefile for details
+vars2subs="BINDIR=${EPREFIX}/usr/bin
+MANDIR=${EPREFIX}/usr/share/man/man\$\(MANSUFFIX\)
+XFIGLIBDIR=${EPREFIX}/usr/share/xfig
+PNGINC=-I${EPREFIX}/usr/include/X11
+XPMINC=-I${EPREFIX}/usr/include/X11
+USEINLINE=-DUSE_INLINE
+RGB=${EPREFIX}/usr/share/X11/rgb.txt
+FIG2DEV_LIBDIR=${EPREFIX}/usr/share/fig2dev"
+
+for variable in ${vars2subs} ; do
+varname=${variable%%=*}
+varval=${variable##*=}
+sed -i "s:^\(XCOMM\)*[[:space:]]*${varname}[[:space:]]*=.*$:${varname} = ${varval}:" "$@"
+done
+} 
+
+
 build()
 {
 go_src_dir
 burn_patches
-export PREFIX=/usr
-export DESTDIR=${pkgdir}
-xmkmf -a
-make
- make install
+find . -name Makefile -delete
+find . -type f -exec chmod a-x '{}' \;
+echo sed...
+sed -e 's:-L$(/usr/lib{LIBDIRSUFFIX}) -lz::' \
+-e 's: -lX11::' \
+-i fig2dev/Imakefile
+echo g
+sed_Imakefile fig2dev/Imakefile fig2dev/dev/Imakefile 
+xmkmf
+echo Makefiles...
+make CC="${CC}" LOCAL_LDFLAGS="$SLKLDFLAGS" CDEBUGFLAGS="${CFLAGS}" LIBDIR=/usr/lib${LIBDIRSUFFIX}/X11 Makefiles
+echo Make...
+make 
+echo install..
+DESTDIR=${pkgdir} make install
 }
 
 

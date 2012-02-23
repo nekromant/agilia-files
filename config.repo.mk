@@ -1,5 +1,5 @@
 #List broken packages (No autobuild)
-broken = xilinx_ise_webpack freecad libgl-nvidia
+broken = xilinx_ise_webpack freecad libgl-nvidia courier
 
 exclude_upstream=xerces agilia-crossdev acpi_call
 

@@ -17,7 +17,7 @@ endif
 ######BLACK MAGIC GOES BELOW######
 
 dirs = $(patsubst ./%,%,$(filter-out $(repo),$(shell find $(repo) -type d -maxdepth 1)))
-dirs := $(filter-out $(exclude), $(dirs))
+dirs := $(filter-out $(addprefix $(repo)/,$(exclude)), $(dirs))
 dirsu=$(filter-out $(exclude_upstream),$(dirs))
 
 
@@ -32,7 +32,7 @@ cd $(pdir) && mpkg install -y $(1)*
 endef
 
 define make_stamp
-$(addsuffix .$(repo).stamp,$(addprefix $(stampdir)/,$(1)))
+$(addsuffix .$(repo).$(2),$(addprefix $(stampdir)/,$(1)))
 endef
 
 define run_mkpg
@@ -45,10 +45,10 @@ endef
 
 define package
 $(info $(1) $(2) $(3))
-$(1) : $(call make_stamp,$(2))
+$(1) : $(call make_stamp,$(2),built)
 	@echo Package $(1) has been created successfully
 
-$(call make_stamp,$(2)): $(call make_stamp,$(3)) $(addsuffix /ABUILD,$(1)) 
+$(call make_stamp,$(2),built): $(call make_stamp,$(3),built) $(addsuffix /ABUILD,$(1)) 
 	-cd $(pdir) && rm $(1)*
 	$(call run_mkpg,$(1))
 	-$(call do_install,$(2))
@@ -57,13 +57,13 @@ $(call make_stamp,$(2)): $(call make_stamp,$(3)) $(addsuffix /ABUILD,$(1))
 	tar -tf $(pdir)/$(repo)/$(2)* |while read line;\
 	do echo "$$$${line}<br>";\
 	done > $(pdir)/$(repo)/$(2).files.html
-	touch $(call make_stamp,$(2))
+	touch $(call make_stamp,$(2),built)
 
-$(call make_stamp,push-$(2)): $(call make_stamp,$(1)) $(call make_stamp,$(addprefix push-,$(3)))
-	./agiload.sh $(pdir)/$(1)*.txz
-	touch $(call make_stamp,push-$(1))
+$(call make_stamp,$(2),pushed): $(call make_stamp,$(2),built)
+	./agiload.sh $(pdir)/$(repo)/$(2)*.txz
+	touch $(call make_stamp,$(2),pushed)
 
-pushqueue+=$(call make_stamp,push-$(1))
+pushqueue+=$(call make_stamp,$(2),pushed)
 
 endef
 
@@ -88,31 +88,32 @@ $(pdir)/$(repo):
 .PHONY: purge pushindex $(dirs) all
 
 genhtml: index
-	cat $(pdir)/package_list|while read line;\
+	cat $(pdir)/$(repo)/package_list|while read line;\
 	do echo "$$line<br>";\
-	done  > $(pdir)/package_list.html
+	done  > $(pdir)/$(repo)/package_list.html
 
 pushindex: genhtml
-	cd $(pdir);\
+	cd $(pdir)/$(repo);\
 	scp $(indexfiles) $(repo)
 
-push: 
-	rsync -arv --delete-after $(rsyncextra) $(pdir)/   $(repo)
+rsync: 
+	rsync -arv --delete-after $(rsyncextra) $(pdir)/$(repo)   $(url_$(repo))
+
 purge:
-	mpkg remove $(dirs)
-	-rm -f $(pdir)/*
+	mpkg remove $(patsubst $(repo)/%,%,$(dirs))
+	-rm -f $(pdir)/$(repo)/*
 	-rm -f $(stampdir)/*
 
 $(foreach dir,$(dirs),$(eval $(call package,$(dir),$(patsubst $(repo)/%,%,$(dir)),$(call get_build_dep,$(dir)))))
 # $(foreach dummy,$(dumies),$(eval $(call dummy_rule,$(dummy))))
 
 
-push-testing: $(call make_stamp,$(addprefix push-,$(dirsu)))
+agiload: $(pushqueue)
 	echo "Pushed, ok"
 
 index:
-	cd $(pdir) && mpkg-index
+	cd $(pdir)/$(repo) && mpkg-index
 
 stat:
-	@echo "To push: $(call make_stamp,$(dirsu))"
+	@echo "To push: $(call make_stamp,$(dirsu),pushed)"
 
