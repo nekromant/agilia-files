@@ -55,8 +55,9 @@ BUILD_SYSTEM="cmake"
 BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
 -DCMAKE_BUILD_TYPE=Release \
 -DLIB_DIR=lib${LIBDIRSUFFIX} \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
+-DCGAL_INSTALL_LIB_DIR=lib${LIBDIRSUFFIX} \
 ../"
+
 
 #ran after function build() 
 #после сборки
